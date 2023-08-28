@@ -9,13 +9,9 @@ const avatar = joi.string();
 const isSeller = joi.boolean().default(false);
 
 export const userSchema = joi.object({
-  name: name.required(),
-  lastName: lastName.required(),
   email: email.required(),
   password: password.required(),
-  repeatPassword: repeatPassword.required(),
-  avatar: avatar.required(),
-  isSeller: isSeller.optional(),
+  repeatPassword: repeatPassword.required()
 });
 
 export const loginSchema = joi.object({

@@ -106,5 +106,4 @@ class GigService {
 }
 
 
-
 export default GigService;

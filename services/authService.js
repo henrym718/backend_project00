@@ -1,52 +1,44 @@
-import User from "../models/userModel.js";
-import { cargarImageS3, obtenerImageS3 } from "../shared/images/aws_s3.js";
+import AuthModel from "../models/authModel.js";
+import bcrypt from "bcrypt";
 import { createToken } from "../shared/token/create.js";
 import createError from "http-errors";
-import path from "path";
-import fs from "fs-extra";
-import bcrypt from "bcrypt";
+
 
 class Auth {
-  async register(data) {
+
+  async register(credentials) {
     try {
       //obtener la data
-      const { email, password, avatar: pathAvatar, ...others } = data;
+      const { email, password } = credentials
 
       //verificar si el usuario existe
-      const userExists = await User.findOne({ email });
-      if (userExists) throw createError.Conflict("User already exists");
-
-      //subir imagen a S3 de AWS
-      const fileNameAvatar = path.basename(pathAvatar);
-      await cargarImageS3(pathAvatar, fileNameAvatar);
-      await fs.unlink(pathAvatar);
-      const urlAvatar = await obtenerImageS3(fileNameAvatar);
+      const userExists = await AuthModel.findOne({ email })
+      console.log(userExists)
+      if (userExists) { throw createError.Conflict("User already exists") }
 
       //encryptar contraseña
-      const hash = bcrypt.hashSync(password, 5);
+      const hash = bcrypt.hashSync(password, 5)
 
-      //Crear usuario en la base de datos
-      const user = await User.create({
-        password: hash, email, avatar: { uri: urlAvatar, tag: fileNameAvatar }, ...others
-      });
+      //crea el registro en la base de datos
+      const auth = await AuthModel.create({ email, password: hash })
 
       //crear Token para el usuario
-      const token = createToken({ id: user._id, isSeller: user.isSeller });
+      const token = createToken({ id: auth.id })
 
-      //retornar valores
-      return { token, user };
+      //crear Token para el usuario
+      return token
     } catch (err) {
-      throw err;
+      throw err
     }
   }
 
-  async login(data) {
+  async login(credentials) {
     try {
       //Obtener data
-      const { email, password } = data;
+      const { email, password } = credentials;
 
       //Verificar si usuario existe en la base de datos
-      const user = await User.findOne({ email: email });
+      const user = await AuthModel.findOne({ email: email });
       if (!user) { throw createError.NotFound("User not found") }
 
       //Validar contraseñas
@@ -54,13 +46,17 @@ class Auth {
       if (!validatePasswords) { throw createError.Unauthorized("Passwords do not match") }
 
       //Crear Token
-      const token = createToken({ id: user._id, isSeller: user.isSeller });
+      const token = createToken({ id: user.id });
 
       //Responder al cliente
-      return { token, user };
+      return token;
     } catch (err) {
       throw err;
     }
+  }
+
+  async logout(res) {
+    res.clearCookie("accessToken", { sameSite: "none", secure: true }).status(200).send("User has been logged out")
   }
 }
 
