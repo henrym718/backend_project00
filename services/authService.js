@@ -8,24 +8,24 @@ class Auth {
 
   async register(credentials) {
     try {
-      //obtener la data
+      /*obtener la data*/
       const { email, password } = credentials
 
-      //verificar si el usuario existe
+      /*verificar si el usuario existe*/
       const userExists = await AuthModel.findOne({ email })
       console.log(userExists)
       if (userExists) { throw createError.Conflict("User already exists") }
 
-      //encryptar contraseña
+      /*encryptar contraseña*/
       const hash = bcrypt.hashSync(password, 5)
 
-      //crea el registro en la base de datos
+      /*crea el registro en la base de datos*/
       const auth = await AuthModel.create({ email, password: hash })
 
-      //crear Token para el usuario
+      /*crear Token para el usuario*/
       const token = createToken({ id: auth.id })
 
-      //crear Token para el usuario
+      /*retornar el token*/
       return token
     } catch (err) {
       throw err
@@ -34,21 +34,22 @@ class Auth {
 
   async login(credentials) {
     try {
-      //Obtener data
+      /*obtener data*/
       const { email, password } = credentials;
 
-      //Verificar si usuario existe en la base de datos
+      /*verificar si usuario existe en la base de datos*/
       const user = await AuthModel.findOne({ email: email });
       if (!user) { throw createError.NotFound("User not found") }
 
-      //Validar contraseñas
+      /*validar contraseñas*/
       const validatePasswords = bcrypt.compareSync(password, user.password);
       if (!validatePasswords) { throw createError.Unauthorized("Passwords do not match") }
 
-      //Crear Token
+
+      /*crear Token*/
       const token = createToken({ id: user.id });
 
-      //Responder al cliente
+      /*retornar el token*/
       return token;
     } catch (err) {
       throw err;

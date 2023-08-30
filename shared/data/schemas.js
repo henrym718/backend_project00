@@ -1,14 +1,32 @@
 import joi from "joi";
 
-const name = joi.string();
-const lastName = joi.string();
+
+/*  auth */
 const email = joi.string().email();
 const password = joi.string().pattern(new RegExp("^.{8,}$"));
 const repeatPassword = joi.any().valid(joi.ref("password"));
-const avatar = joi.string();
-const isSeller = joi.boolean().default(false);
 
-export const userSchema = joi.object({
+/*  seller profile */
+const firstName = joi.string();
+const lastName = joi.string();
+const displayName = joi.string().label("username")
+const aboutMe = joi.string()
+const city = joi.string()
+const phone = joi.string();
+
+/* gig */
+const service = joi.string();
+const counter = joi.number();
+const images = joi.array();
+const aboutService = joi.string();
+const features = joi.string();
+const price = joi.number();
+const subcategory = joi.string();
+const active = joi.boolean().default(true);
+
+
+
+export const authSchema = joi.object({
   email: email.required(),
   password: password.required(),
   repeatPassword: repeatPassword.required()
@@ -19,18 +37,14 @@ export const loginSchema = joi.object({
   password: password.required(),
 });
 
-const currencyRegex = /^\$\d{1,3}(,\d{3})*\.\d{2}$/;
-const service = joi.string();
-const counter = joi.number();
-const images = joi.array();
-const aboutService = joi.string();
-const aboutMe = joi.string();
-const features = joi.string();
-const price = joi.number();
-const subcategory = joi.string();
-const phone = joi.string();
-const address = joi.string();
-const active = joi.boolean().default(true);
+export const sellerProfileSchema = joi.object({
+  firstName: firstName.required(),
+  lastName: lastName.required(),
+  displayName: displayName.required(),
+  aboutMe: aboutMe.required(),
+  city: city.required(),
+  phone: phone.required()
+})
 
 export const gigSchema = joi.object({
   service: service.required(),
@@ -42,6 +56,5 @@ export const gigSchema = joi.object({
   price: price.required(),
   subcategory: subcategory.required(),
   phone: phone.required(),
-  address: address.required(),
   active: active.optional(),
 });

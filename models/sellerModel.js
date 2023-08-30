@@ -1,16 +1,19 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
+    userId: mongoose.Types.ObjectId,
     firstName: String,
     lastName: String,
     displayName: String,
     aboutMe: String,
+    city: String,
+    phone: String,
     memberSince: { type: Date, default: new Date() },
-    isSeller: { type: Boolean, default: true },
+    isSeller: { type: Boolean, default: false },
     avatar: {
       uri: String,
-      tag: String,
+      filename: String,
     },
   },
   {
@@ -19,5 +22,5 @@ const userSchema = new Schema(
   }
 );
 
-const user = model("User", userSchema);
+const user = mongoose.model("User", userSchema);
 export default user;

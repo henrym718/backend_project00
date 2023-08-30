@@ -18,4 +18,4 @@ const fileFilter = function (_, file, cb) {
   }
 };
 
-export const upload = multer({ storage, fileFilter });
+export const upload = multer({ storage, fileFilter, fileFilter });

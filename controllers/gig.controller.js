@@ -1,6 +1,6 @@
 import Gig from "../models/gig.model.js";
 import Subcategory from "../models/subcategoryModel.js";
-import User from "../models/userModel.js";
+import User from "../models/sellerModel.js";
 import GigService from "../services/gigService.js";
 
 const gigService = new GigService();

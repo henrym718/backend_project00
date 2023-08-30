@@ -1,26 +1,28 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const gigSchema = new Schema(
+const gigSchema = new mongoose.Schema(
   {
     userId: mongoose.Types.ObjectId,
-    service: String,
-    counter: { type: Number, default: 0 },
-    images: [String],
-    aboutService: String,
-    aboutMe: String,
-    features: String,
+    title: String,
+    category: mongoose.Types.ObjectId,
+    subcategory: mongoose.Types.ObjectId,
+    tags: [String],
+    city: String,
     price: Number,
-    subcategory: { type: mongoose.Schema.Types.ObjectId, ref: "Subcategory" },
+    aboutGig: String,
     phone: String,
-    address: String,
-    active: Boolean,
+    faq: [{ question: String, answer: String }],
+    images: [{ url: String, filename: String, }],
+    counter: { type: Number, default: 0 },
+    active: { type: Boolean, default: false },
+    createdAt: { type: Date, default: new Date() },
   },
   {
-    timestamps: true,
+    timestamps: false,
     versionKey: false,
   }
 );
 
-const gig = model("Gig", gigSchema);
+const gig = mongoose.model("Gig", gigSchema);
 
 export default gig;

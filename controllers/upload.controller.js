@@ -1,8 +1,10 @@
-export const cargarAvatar = async (req, res) => {
+import createError from "http-errors"
+export const cargarAvatar = async (req, res, next) => {
   try {
-    res.status(201).json(req.file.path);
-  } catch (error) {
-    res.status(400).send("error");
+    if (!req.file) throw createError.BadRequest("No file specified")
+    res.status(201).json("req.file.path");
+  } catch (err) {
+    next(err);
   }
 };
 

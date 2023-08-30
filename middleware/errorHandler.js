@@ -8,9 +8,9 @@ function errorLog(err, req, res, next) {
 
 function errorHandler(err, req, res, next) {
   if (err instanceof createError.HttpError) {
-    res.status(err.statusCode).json({ error: err.message });
+    res.status(err.statusCode).json({ error: true, message: err.message });
   } else {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 }
 

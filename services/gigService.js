@@ -1,7 +1,7 @@
 import createError from "http-errors";
 import Gig from "../models/gig.model.js";
 import SubCategory from "../models/subcategoryModel.js";
-import User from "../models/userModel.js";
+import User from "../models/sellerModel.js";
 
 class GigService {
   async getGigsByCategory(query) {

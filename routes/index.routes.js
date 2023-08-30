@@ -1,5 +1,6 @@
 import express from "express";
 import authRouter from "./authRouter.js";
+import sellerRouter from "./sellerRouter.js"
 import uploadRouter from "./upload.router.js";
 import categoryRouter from "./categoryRouter.js";
 import subcategoryRouter from "./subcategory.router.js";
@@ -12,6 +13,7 @@ export const indexRoutes = () => {
   router.use("/api/image", uploadRouter);
   router.use("/api", categoryRouter);
   router.use("/api/subcategory", subcategoryRouter);
+  router.use("/api/seller", sellerRouter)
   //router.use("/api/categories", gigRouter);
 
   router.use("/api/gigs", gigRouter);
