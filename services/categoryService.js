@@ -5,12 +5,18 @@ import createError from "http-errors";
 class Categories {
   async createNewCategory(category) {
     try {
-      return await Category.create(category);
+      const categoryExists = await Category.find({ name: { $regex: category.name, $options: "i" } })
+      if (categoryExists.length > 0) throw createError.Conflict("Category already exists")
+      const newCategory = await Category.create(category);
+      return newCategory
     } catch (err) {
       throw err;
     }
   }
 
+
+
+  /** faltan de revisar  */
   async updateCategory(category, update) {
     try {
       // Buscar la categoría por nombre (ignorando mayúsculas/minúsculas)

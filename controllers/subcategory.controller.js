@@ -1,27 +1,15 @@
-import Category from "../models/categoryModel.js";
-import Subcategory from "../models/subcategoryModel.js";
+import SubcategoryService from "../services/subcategoryService.js"
 
-export const createNewSubcategory = async (req, res) => {
+const subcategoryService = new SubcategoryService()
+
+export const createNewSubcategory = async (req, res, next) => {
   try {
-    const foundCategory = await Category.findOne({
-      name: { $regex: req.body.category, $options: "i" },
-    });
+    const subcategory = await subcategoryService.createNewSubcategory(req.body)
+    res.status(200).send({ error: false, subcategory })
+  } catch (err) {
+    next(err)
 
-    if (!foundCategory) { return res.status(404).send("Category not found") }
-
-    const subcategory = await Subcategory.create({
-      name: req.body.name, category: foundCategory.id,
-    });
-    res.status(200).json({
-      id: subcategory._id,
-      subcategory: subcategory.name,
-      category: foundCategory.name,
-    });
-  } catch (error) {
-    res.status(400).json(error);
   }
 };
 
-export const getAll = async (req, res, next) => {
-  res.send("Welcome");
-};
+

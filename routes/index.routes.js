@@ -9,11 +9,12 @@ import gigRouter from "./gigRouter.js";
 export const indexRoutes = () => {
   const router = express.Router();
 
-  router.use("/api/auth", authRouter);
-  router.use("/api/image", uploadRouter);
-  router.use("/api", categoryRouter);
-  router.use("/api/subcategory", subcategoryRouter);
-  router.use("/api/seller", sellerRouter)
+  router.use("/auth", authRouter);
+  router.use("/seller", sellerRouter)
+  router.use("/category", categoryRouter);
+  router.use("/subcategory", subcategoryRouter);
+
+  //router.use("/api/image", uploadRouter);
   //router.use("/api/categories", gigRouter);
 
   router.use("/api/gigs", gigRouter);

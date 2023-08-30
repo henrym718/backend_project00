@@ -7,6 +7,10 @@ import { gigSchema } from "../shared/data/schemas.js";
 const router = express.Router();
 
 router.post("/create", verifyToken, validator(gigSchema), gigController.createNewGig);
+
+
+
+
 router.get("/:subcategory?", gigController.getGigsBySubCategoryOrFilters);
 router.get("/v1/:email/:service?", gigController.getGigByUserOrNameService);
 

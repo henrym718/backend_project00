@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const subcategorySchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+    name: String,
+    category: mongoose.Schema.Types.ObjectId
   },
   {
-    timestamps: true,
+    timestamps: false,
     versionKey: false,
   }
 );

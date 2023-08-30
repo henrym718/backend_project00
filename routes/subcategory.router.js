@@ -3,7 +3,7 @@ import * as subcategoryController from "../controllers/subcategory.controller.js
 
 const router = express.Router();
 
-router.post("/create", subcategoryController.createNewSubcategory);
-router.get("/categories/:category/:subcategory", subcategoryController.getAll);
+router.post("/createnewsubcategory", subcategoryController.createNewSubcategory);
+
 
 export default router;

@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //Index routes
-app.use(indexRoutes());
+app.use("/api", indexRoutes());
 
 //ErrorHandler
 app.use(errorLog);

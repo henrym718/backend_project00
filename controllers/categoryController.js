@@ -1,16 +1,19 @@
-import CategoriesService from "../services/categoriesService.js";
+import CategoriesService from "../services/categoryService.js";
 
 const categoriesService = new CategoriesService();
 
 export const createNewCategory = async (req, res, next) => {
   try {
-    const newCategory = await categoriesService.createNewCategory(req.body);
-    res.status(200).send(newCategory);
+    const category = await categoriesService.createNewCategory(req.body);
+    res.status(200).send({ error: false, category });
   } catch (err) {
     next(err);
   }
 };
 
+
+
+/* faltan de revisar */
 export const updateCategory = async (req, res, next) => {
   try {
     const { category } = req.params;

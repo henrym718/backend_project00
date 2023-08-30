@@ -1,7 +1,6 @@
 import SellerModel from "../models/sellerModel.js";
 import createError from "http-errors"
 import { cargarImageS3, obtenerImageS3 } from "../shared/images/aws_s3.js";
-import path from "path";
 import fs from "fs-extra";
 
 class Seller {
