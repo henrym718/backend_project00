@@ -2,58 +2,26 @@ import Gig from "../models/gig.model.js";
 import Subcategory from "../models/subcategoryModel.js";
 import User from "../models/sellerModel.js";
 import GigService from "../services/gigService.js";
+import createError from "http-errors"
 
 const gigService = new GigService();
 
-export const createNewGig = async (req, res) => {
-  //El middleware valida la data y que este logueado//
-
-  //Obtengo la data que envia el usuario
+export const createNewGig = async (req, res, next) => {
   try {
-    const {
-      service,
-      aboutService,
-      aboutMe,
-      features,
-      price,
-      subcategory,
-      phone,
-      address,
-      active,
-    } = req.body;
-
-    //Busco el id de la subtcategoria para registrar el gig
-    const idSubcategory = await Subcategory.findOne(
-      {
-        name: { $regex: subcategory, $options: "i" },
-      },
-      { _id: 1 }
-    );
-
-    //Creo un nuevo gig y lo guardo en la base de datos
-
-    await Gig.create({
-      userId: req.userId,
-      active,
-      subcategory: idSubcategory,
-      service,
-      aboutService,
-      aboutMe,
-      features,
-      price,
-      phone,
-      address,
-    });
-
-    //Actualizo al usuario a seller true
-    await User.updateOne({ _id: req.userId }, { $set: { isSeller: true } });
-
-    //Responder al cliente
-    res.status(200).json("Gig creado exitosamente");
-  } catch (error) {
-    res.status(400).json({ succes: false, msg: error });
+    const userId = { userId: req.userId }
+    const images = req.files && { images: req.files }
+    const data = { ...req.body, ...images, ...userId }
+    await gigService.createNewGig(data)
+    res.status(200).json({ error: false, message: data })
+  } catch (err) {
+    next(err)
   }
+
 };
+
+
+
+/* aun no verificado */
 
 export const getGigsBySubCategoryOrFilters = async (req, res, next) => {
   try {

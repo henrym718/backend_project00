@@ -13,11 +13,11 @@ export const indexRoutes = () => {
   router.use("/seller", sellerRouter)
   router.use("/category", categoryRouter);
   router.use("/subcategory", subcategoryRouter);
+  router.use("/gig", gigRouter);
 
   //router.use("/api/image", uploadRouter);
   //router.use("/api/categories", gigRouter);
 
-  router.use("/api/gigs", gigRouter);
 
   return router;
 };

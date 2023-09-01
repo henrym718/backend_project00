@@ -15,15 +15,16 @@ const city = joi.string()
 const phone = joi.string();
 
 /* gig */
-const service = joi.string();
-const counter = joi.number();
-const images = joi.array();
-const aboutService = joi.string();
-const features = joi.string();
-const price = joi.number();
+const title = joi.string();
+const category = joi.string();
 const subcategory = joi.string();
-const active = joi.boolean().default(true);
+const tags = joi.string()
+const price = joi.number();
+const aboutGig = joi.string();
+const faq = joi.string();
 
+/* subcategory */
+const name = joi.string()
 
 
 export const authSchema = joi.object({
@@ -46,15 +47,21 @@ export const sellerProfileSchema = joi.object({
   phone: phone.required()
 })
 
+export const createSubcategorySchema = joi.object({
+  name: name.required(),
+  category: category.required(),
+
+})
+
+
 export const gigSchema = joi.object({
-  service: service.required(),
-  counter: counter.optional(),
-  images: images.optional(),
-  aboutService: aboutService.required(),
-  aboutMe: aboutMe.required(),
-  features: features.required(),
-  price: price.required(),
+  title: title.required(),
+  category: category.required(),
   subcategory: subcategory.required(),
+  tags: tags.required(),
+  city: city.required(),
+  price: price.required(),
+  aboutGig: aboutGig.required(),
   phone: phone.required(),
-  active: active.optional(),
+  faq: faq.required(),
 });

@@ -2,8 +2,49 @@ import createError from "http-errors";
 import Gig from "../models/gig.model.js";
 import SubCategory from "../models/subcategoryModel.js";
 import User from "../models/sellerModel.js";
+import fs from "fs-extra"
+import { cargarImageS3, obtenerImageS3 } from "../shared/images/aws_s3.js"
 
 class GigService {
+
+  async createNewGig(data) {
+    try {
+      // Verifica si hay imágenes
+      if (data.images.length === 0) {
+        throw createError.BadRequest("No se encontraron imágenes");
+      }
+
+      // Deserializa los campos
+      data.tags = JSON.parse(data.tags);
+      data.faq = JSON.parse(data.faq);
+
+      // Carga y obtiene las imágenes de forma paralela
+      const imagePromises = data.images.map(async (image) => {
+        try {
+          await cargarImageS3(image.path, image.filename);
+          const url = await obtenerImageS3(image.path);
+          return { url, filename: image.filename };
+        } catch (err) {
+          throw err
+        } finally {
+          fs.unlinkSync(image.path)
+        }
+      });
+
+      // Espera todas las operaciones de carga de imágenes
+      data.images = await Promise.all(imagePromises);
+      const newGig = await Gig.create(data)
+
+      // Devuelve los datos
+      return newGig;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  /* aun no los he revisado nuevamenye  */
+
   async getGigsByCategory(query) {
     try {
       console.log(query);

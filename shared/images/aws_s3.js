@@ -1,3 +1,4 @@
+import createError from "http-errors"
 import {
   S3Client,
   PutObjectCommand,
@@ -23,8 +24,8 @@ export const cargarImageS3 = async (path, fileName) => {
   });
   try {
     return await S3.send(comand);
-  } catch (error) {
-    res.status(400).json("Error al cargar image a la nube");
+  } catch (err) {
+    throw createError.BadRequest("Error al subir imagenes al servidor")
   }
 };
 
@@ -37,7 +38,7 @@ export const obtenerImageS3 = async (key) => {
   try {
     const url = await getSignedUrl(S3, command);
     return url;
-  } catch (error) {
-    res.status(400).json("Error al obtener la image de la nube");
+  } catch (err) {
+    throw createError.BadRequest("Error al crear url de imagenes")
   }
 };
