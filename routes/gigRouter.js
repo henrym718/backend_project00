@@ -1,13 +1,13 @@
 import express from "express";
 import * as gigController from "../controllers/gig.controller.js";
-import { verifyToken } from "../shared/token/verify.js";
+import verifyJWT from "../shared/token/verifyJWT.js";
 import { upload } from "../shared/images/multer.js"
 import { validator } from "../shared/data/validator.js";
 import { gigSchema } from "../shared/data/schemas.js";
 
 const router = express.Router();
 
-router.post("/creategig", verifyToken, upload.array("images", 3), validator(gigSchema, "body"), gigController.createNewGig);
+router.post("/creategig", verifyJWT, validator(gigSchema, "body"), upload.array("images", 3), gigController.createNewGig);
 
 
 

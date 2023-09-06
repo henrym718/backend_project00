@@ -1,6 +1,6 @@
 import AuthModel from "../models/authModel.js";
 import bcrypt from "bcrypt";
-import { createToken } from "../shared/token/create.js";
+import { createAccesToken, createRefreshToken } from "../shared/token/create.js";
 import createError from "http-errors";
 
 
@@ -19,14 +19,17 @@ class Auth {
       /*encryptar contraseña*/
       const hash = bcrypt.hashSync(password, 5)
 
-      /*crea el registro en la base de datos*/
-      const auth = await AuthModel.create({ email, password: hash })
 
-      /*crear Token para el usuario*/
-      const token = createToken({ id: auth.id })
+      /*crear AccesToken para el usuario*/
+      const accessToken = createAccesToken({ id: auth.id })
+      /*crear RefreshToken para el usuario*/
+      const refreshToken = createRefreshToken({ id: auth.id })
+
+      /*crea el registro en la base de datos*/
+      const auth = await AuthModel.create({ email, password: hash, refreshToken })
 
       /*retornar el token*/
-      return token
+      return { accessToken, refreshToken }
     } catch (err) {
       throw err
     }
@@ -46,18 +49,35 @@ class Auth {
       if (!validatePasswords) { throw createError.Unauthorized("Passwords do not match") }
 
 
-      /*crear Token*/
-      const token = createToken({ id: user.id });
+      /*crear AccesToken para el usuario*/
+      const accessToken = createAccesToken({ id: user.id })
+      /*crear RefreshToken para el usuario*/
+      const refreshToken = createRefreshToken({ id: user.id })
+
+      //actualiza la base de datos con el nuevo refresToken
+      user.refreshToken = refreshToken
+      await user.save()
 
       /*retornar el token*/
-      return token;
+      return { accessToken, refreshToken };
     } catch (err) {
       throw err;
     }
   }
 
   async logout(res) {
-    res.clearCookie("accessToken", { sameSite: "none", secure: true }).status(200).send("User has been logged out")
+    const cookie = res.cookie
+    if (!cookie?.jwt) throw createError(204, "token not found")
+    const refreshToken = cookie.jwt
+    const user = await AuthModel.findOne({ refreshToken }).exec()
+    if (!user) {
+      res.clearCookie("accessToken", { sameSite: "none", sameSite: "none", secure: true }).status(200).send("User has been logged out")
+      throw createError(204, "token not found")
+    }
+    user.refreshToken = ""
+    await user.save()
+    res.clearCookie("accessToken", { sameSite: "none", sameSite: "none", secure: true })
+    res.status(204).send("User has been logged out")
   }
 }
 

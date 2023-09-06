@@ -42,7 +42,6 @@ class GigService {
     }
   }
 
-
   /* aun no los he revisado nuevamenye  */
 
   async getGigsByCategory(query) {

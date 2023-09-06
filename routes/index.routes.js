@@ -5,6 +5,7 @@ import uploadRouter from "./upload.router.js";
 import categoryRouter from "./categoryRouter.js";
 import subcategoryRouter from "./subcategory.router.js";
 import gigRouter from "./gigRouter.js";
+import refresTokenRouter from "./refreshTokenRouter.js";
 
 export const indexRoutes = () => {
   const router = express.Router();
@@ -14,6 +15,7 @@ export const indexRoutes = () => {
   router.use("/category", categoryRouter);
   router.use("/subcategory", subcategoryRouter);
   router.use("/gig", gigRouter);
+  router.use("/token", refresTokenRouter);
 
   //router.use("/api/image", uploadRouter);
   //router.use("/api/categories", gigRouter);

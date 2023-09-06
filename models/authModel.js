@@ -2,7 +2,8 @@ import mongoose from "mongoose"
 
 const authSchema = new mongoose.Schema({
     email: String,
-    password: String
+    password: String,
+    refreshToken: String
 }, {
     timestamps: true,
     versionKey: false

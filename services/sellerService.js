@@ -4,10 +4,10 @@ import { cargarImageS3, obtenerImageS3 } from "../shared/images/aws_s3.js";
 import fs from "fs-extra";
 
 class Seller {
-    async getSellerByToken(userIdByToken) {
+    async getSellerByToken(id) {
         try {
             /* busqueda del vendedor y si en caso aun no existe informar */
-            const seller = await SellerModel.findOne({ userId: userIdByToken })
+            const seller = await SellerModel.findOne({ userId: id })
             if (!seller) throw createError.NotFound("Not a seller yet")
             return seller
         } catch (err) {

@@ -5,6 +5,7 @@ import joi from "joi";
 const email = joi.string().email();
 const password = joi.string().pattern(new RegExp("^.{8,}$"));
 const repeatPassword = joi.any().valid(joi.ref("password"));
+const refreshToken = joi.string()
 
 /*  seller profile */
 const firstName = joi.string();
@@ -30,7 +31,8 @@ const name = joi.string()
 export const authSchema = joi.object({
   email: email.required(),
   password: password.required(),
-  repeatPassword: repeatPassword.required()
+  repeatPassword: repeatPassword.required(),
+  refreshToken: refreshToken.optional(),
 });
 
 export const loginSchema = joi.object({
