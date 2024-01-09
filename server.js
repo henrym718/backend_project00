@@ -12,8 +12,16 @@ const app = express();
 import dbConnect from "./config/mongo.js";
 import { indexRoutes } from "./routes/index.routes.js";
 
-//Middleware
-app.use(cors({ origin: "*", credentials: true }));
+/** esta es la que vale */
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin); // Reemplaza con el origen de tu aplicación React
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -25,7 +33,7 @@ app.use(errorLog);
 app.use(errorHandler);
 
 //Running server
-var server = app.listen(process.env.PORT || 3000, async () => {
+var server = app.listen(process.env.PORT || 3000, () => {
   dbConnect();
   console.log("express server listening on port " + server.address().port);
 });

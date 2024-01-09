@@ -6,15 +6,13 @@ const userSchema = new mongoose.Schema(
     firstName: String,
     lastName: String,
     displayName: String,
-    aboutMe: String,
+    gender: String,
     city: String,
+    aboutMe: String,
+    avatar: { uri: String, filename: String },
     phone: String,
     memberSince: { type: Date, default: new Date() },
     isSeller: { type: Boolean, default: false },
-    avatar: {
-      uri: String,
-      filename: String,
-    },
   },
   {
     timestamps: false,

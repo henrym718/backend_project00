@@ -7,8 +7,7 @@ export const refreshToken = async (req, res, netx) => {
     try {
         const cookie = req.cookies
         const accessToken = await refreshTokenService.refreshTokenService(cookie)
-        console.log(accessToken)
-        res.status(200).json({ error: false, token: accessToken })
+        res.status(200).json({ error: false, accessToken })
     } catch (err) {
         netx(err)
 

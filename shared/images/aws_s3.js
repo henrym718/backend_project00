@@ -34,7 +34,6 @@ export const obtenerImageS3 = async (key) => {
     Bucket: "apijob",
     Key: key,
   });
-
   try {
     const url = await getSignedUrl(S3, command);
     return url;

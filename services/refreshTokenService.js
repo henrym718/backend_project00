@@ -7,18 +7,15 @@ import jwt from "jsonwebtoken";
 class RefreshTokenService {
     async refreshTokenService(cookie) {
         try {
-
-            if (!cookie?.refreshToken) {
-                throw createError.Unauthorized("Refresh token not found")
-            }
+            if (!cookie?.refreshToken) throw createError.Unauthorized("Refresh token not found")
 
             const refreshToken = cookie.refreshToken
             const foundUser = await AuthModel.findOne({ refreshToken }).exec()
             if (!foundUser) throw createError.Forbidden("User token not found")
 
-            /* evaluate jwt */
+            /* evaluaa el refreshtoken si esta vigente y si prtenece al usuario que envia la peticion refresh  */
             return new Promise((resolve, reject) => {
-                jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err, payload) => {
+                jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
                     if (err || foundUser.id !== payload.id) reject(createError.Unauthorized("Refresh token not valid"))
                     const accessToken = createAccesToken({ id: payload.id })
                     resolve(accessToken)

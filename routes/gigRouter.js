@@ -7,8 +7,7 @@ import { gigSchema } from "../shared/data/schemas.js";
 
 const router = express.Router();
 
-router.post("/creategig", verifyJWT, validator(gigSchema, "body"), upload.array("images", 3), gigController.createNewGig);
-
+router.post("/creategig", verifyJWT, upload.array("images", 3), gigController.createNewGig);
 
 
 router.get("/:subcategory?", gigController.getGigsBySubCategoryOrFilters);

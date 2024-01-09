@@ -8,22 +8,34 @@ const gigService = new GigService();
 
 export const createNewGig = async (req, res, next) => {
   try {
+
+    const { tags, faq } = req.body
+
     const userId = { userId: req.userId }
     const images = req.files && { images: req.files }
     const data = { ...req.body, ...images, ...userId }
-    await gigService.createNewGig(data)
-    res.status(200).json({ error: false, message: data })
+    const response = await gigService.createNewGig(data)
+    res.status(200).json({ error: false, message: response })
   } catch (err) {
     next(err)
   }
 
 };
 
+const isValidJSON = (str) => {
+  try {
+    return JSON.parse(str)
+  } catch (err) {
+    return false
 
+  }
+
+}
 
 /* aun no verificado */
 
 export const getGigsBySubCategoryOrFilters = async (req, res, next) => {
+
   try {
     const params = req.params || {}; // Si req.params es undefined, asigna un objeto vacío
     const filters = req.query || {}; // Si req.query es undefined, asigna un objeto vacío

@@ -15,6 +15,7 @@ export const createSellerProfile = async (req, res, next) => {
         const userId = req.userId && { userId: req.userId }
         const file = req.file && { avatar: req.file }
         const data = { ...req.body, ...file, ...userId }
+        console.log(data)
         const profile = await sellerService.createSellerProfile(data)
         res.status(200).json({ error: false, profile })
     } catch (err) {

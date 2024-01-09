@@ -4,6 +4,7 @@ import createError from "http-errors";
 export const validator = (schema, property) => {
   return (req, res, next) => {
     try {
+
       const data = req[property];
       const params = {
         abortEarly: false,

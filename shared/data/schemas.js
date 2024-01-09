@@ -46,7 +46,7 @@ export const sellerProfileSchema = joi.object({
   displayName: displayName.required(),
   aboutMe: aboutMe.required(),
   city: city.required(),
-  phone: phone.required()
+
 })
 
 export const createSubcategorySchema = joi.object({
