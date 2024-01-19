@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const db = () => {
+const mongoConnect = () => {
   mongoose.connect(process.env.MONGO);
   const mongo = mongoose.connection;
   mongo.on("error", (err) => console.log(err));
@@ -8,4 +8,4 @@ const db = () => {
   mongo.on("close", () => console.log("closed to MongoDB Atlas"));
 };
 
-export default db;
+export default mongoConnect;

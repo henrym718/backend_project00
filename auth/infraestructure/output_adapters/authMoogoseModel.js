@@ -9,5 +9,5 @@ const authSchema = new Schema({
     versionKey: false
 })
 
-const auth = model('Auth', authSchema)
-export default auth
+const authModel = model('Auth', authSchema)
+export default authModel

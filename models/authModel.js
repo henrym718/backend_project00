@@ -8,6 +8,6 @@ const authSchema = new mongoose.Schema({
     timestamps: true,
     versionKey: false
 })
-const auth = mongoose.model('Auth', authSchema)
+const auth = mongoose.model('Auth1', authSchema)
 
 export default auth
