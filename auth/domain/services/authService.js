@@ -11,6 +11,7 @@ class AuthService {
         if (!user) { throw createError.NotFound("Usuario no registrado") }
         return user
     }
+
     async updateRefreshToken(id, newRefreshToken) {
         await this.authRepository.updateRefreshToken(id, newRefreshToken)
     }

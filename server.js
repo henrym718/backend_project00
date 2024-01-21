@@ -11,6 +11,7 @@ const app = express();
 import mongoConnect from "./config/dataBases/mongoConnect.js";
 import authRoutes from "./auth/infraestructure/input_adapters/authRoutes.js"
 
+
 /** esta es la que vale */
 // app.use((req, res, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', req.headers.origin); // Reemplaza con el origen de tu aplicación React

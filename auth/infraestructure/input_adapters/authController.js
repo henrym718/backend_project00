@@ -2,10 +2,10 @@
 class AuthController {
     constructor({ loginCredentialsUseCase }) {
         this.loginCredentialsUseCase = loginCredentialsUseCase;
-        this.loginCredential = this.loginCredential.bind(this)
+        this.loginCredential = this.loginCredentials.bind(this)
     }
 
-    async loginCredential(req, res, next) {
+    async loginCredentials(req, res, next) {
         try {
             const { email, password } = req.body;
             const { accessToken, refreshToken } = await this.loginCredentialsUseCase.execute({ email, password })
