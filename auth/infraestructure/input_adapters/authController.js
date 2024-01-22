@@ -1,7 +1,12 @@
 class AuthController {
-    constructor({ loginCredentialsUseCase, registerCredentialsUseCase }) {
-        this.loginCredentialsUseCase = loginCredentialsUseCase;
-        this.registerCredentialsUseCase = registerCredentialsUseCase;
+    constructor({ loginCredentialsUseCase, registerCredentialsUseCase, logoutUseCase }) {
+        this.loginCredentialsUseCase = loginCredentialsUseCase
+        this.registerCredentialsUseCase = registerCredentialsUseCase
+        this.logoutUseCase = logoutUseCase
+
+        this.loginCredentials = this.loginCredentials.bind(this)
+        this.registerCredentials = this.registerCredentials.bind(this)
+        this.logout = this.logout.bind(this)
 
     }
 
@@ -22,6 +27,16 @@ class AuthController {
             const { accessToken, refreshToken } = await this.registerCredentialsUseCase.execute({ email, password })
             res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
             res.status(200).json({ token: accessToken })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async logout(req, res, next) {
+        try {
+            await this.logoutUseCase.execute(req)
+            res.clearCookie("refreshToken")
+            res.status(200).json({ message: "Logout exitoso" })
         } catch (error) {
             next(error)
         }

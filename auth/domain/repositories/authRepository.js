@@ -3,16 +3,16 @@ class AuthRepository {
         this.dbRepository = dbRepository;
     }
 
-    async getUserByEmail(email) {
-        return await this.dbRepository.getUserByEmail(email);
+    async getUserByField(field) {
+        return await this.dbRepository.getUserByField(field);
     }
 
-    async updateRefreshToken(id, refreshToken) {
-        return await this.dbRepository.updateRefreshToken(id, refreshToken);
+    async updateData(identifier, dataToUpdate) {
+        return await this.dbRepository.updateData(identifier, dataToUpdate);
     }
 
-    async createNewRegisterAuth(email, password, refreshToken) {
-        await this.dbRepository.createNewRegisterAuth(email, password, refreshToken)
+    async createNewRegisterAuth(data) {
+        return await this.dbRepository.createNewRegisterAuth(data)
     }
 
 

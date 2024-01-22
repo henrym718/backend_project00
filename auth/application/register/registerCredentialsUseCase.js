@@ -13,7 +13,7 @@ class RegisterCredentialsUseCase {
             const userEntity = new AuthEntity(email, password)
 
             /*comprobar que el usuario no exista para poder continuar*/
-            await this.authService.checkUserNoExistenceByEmail(userEntity.getEmail())
+            await this.authService.checkUserNoExistenceByEmail({ email: userEntity.getEmail() })
 
             /*encryptar contraseña*/
             const passwordEncrypted = this.authService.encryptPasswords(userEntity.getPassword())
@@ -29,7 +29,7 @@ class RegisterCredentialsUseCase {
             userEntity.setRefreshToken(this.tokenService.createRfereshToken(payloadToken))
 
             /* agrego al registro su respectivo accestoken */
-            await this.authService.createNewRegisterAuth(userEntity.getEmail(), userEntity.getPassword(), userEntity.getRefreshToken())
+            await this.authService.createNewRegisterAuth({ email: userEntity.getEmail(), password: userEntity.getPassword(), refreshToken: userEntity.getRefreshToken() })
 
             /*retornar el token*/
             return { accessToken: userEntity.getAccessToken(), refreshToken: userEntity.getRefreshToken() }

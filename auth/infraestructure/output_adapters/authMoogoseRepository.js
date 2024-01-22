@@ -4,16 +4,16 @@ class AuthMoogoseRepository {
         this.authModel = model;
     }
 
-    async getUserByEmail(email) {
-        return await this.authModel.findOne({ email })
+    async getUserByField(field) {
+        return await this.authModel.findOne(field)
     }
 
-    async updateRefreshToken(idAuth, newRefreshToken) {
-        await this.authModel.updateOne({ _id: idAuth }, { $set: { refreshToken: newRefreshToken } })
+    async updateData(identifier, dataToUpdate) {
+        return await this.authModel.updateOne(identifier, { $set: dataToUpdate })
     }
 
-    async createNewRegisterAuth(email, password, refreshToken) {
-        await this.authModel.create({ email: email, password: password, refreshToken: refreshToken })
+    async createNewRegisterAuth(data) {
+        return await this.authModel.create(data)
     }
 
 }

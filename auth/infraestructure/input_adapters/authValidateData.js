@@ -13,8 +13,14 @@ const repeatPassword = joi.any().valid(joi.ref("password")).messages({
 
 export const authDataValidateLogin = joi.object({
     email: email.required(),
+    password: password.required()
+})
+
+export const authDataValidateRegister = joi.object({
+    email: email.required(),
     password: password.required(),
     repeatPassword: repeatPassword.required()
 })
+
 
 
