@@ -13,6 +13,10 @@ class Auth {
         this.accessToken = token
     }
 
+    setPassword(password) {
+        this.password = password
+    }
+
     setId(id) {
         this._id = id
     }

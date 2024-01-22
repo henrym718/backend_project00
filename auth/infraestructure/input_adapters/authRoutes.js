@@ -13,8 +13,7 @@ import { authContainer } from "../../../config/dependencies/container.js"
 const authController = authContainer.resolve('authController');
 
 // Definimos la ruta de login y asociamos el método del controlador
-router.post("/api/auth/logincredentials", validator(data.authDataValidateLogin), (req, res, next) => authController.loginCredentials(req, res, next));
-
-// Aquí podrías definir más rutas para otras operaciones de autenticación
+router.post("/api/auth/logincredentials", validator(data.authDataValidateLogin), (req, res, next) => authController.loginCredentials(req, res, next))
+router.post("/api/auth/registercredentials", (req, res, next) => authController.registerCredentials(req, res, next))
 
 export default router

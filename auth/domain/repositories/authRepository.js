@@ -11,6 +11,9 @@ class AuthRepository {
         return await this.dbRepository.updateRefreshToken(id, refreshToken);
     }
 
+    async createNewRegisterAuth(email, password, refreshToken) {
+        await this.dbRepository.createNewRegisterAuth(email, password, refreshToken)
+    }
 
 
     // Otros métodos que puedan ser utilizados por AuthService

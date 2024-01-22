@@ -6,14 +6,31 @@ class AuthService {
         this.authRepository = authRepository;
     }
 
+    async getUserByEmail(email) {
+        return await this.authRepository.getUserByEmail(email)
+    }
+
     async checkUserExistenceByEmail(email) {
-        const user = await this.authRepository.getUserByEmail(email)
+        const user = await this.getUserByEmail(email)
         if (!user) { throw createError.NotFound("Usuario no registrado") }
         return user
     }
 
+    async checkUserNoExistenceByEmail(email) {
+        const user = await this.getUserByEmail(email)
+        if (user) { throw createError.NotFound("Usuario registrado") }
+    }
+
     async updateRefreshToken(id, newRefreshToken) {
         await this.authRepository.updateRefreshToken(id, newRefreshToken)
+    }
+
+    async createNewRegisterAuth(email, password, refreshToken) {
+        await this.authRepository.createNewRegisterAuth(email, password, refreshToken)
+    }
+
+    encryptPasswords(password) {
+        return bcrypt.hashSync(password, 10)
     }
 
     validatePasswords(password, passwordEncrypted) {

@@ -10,7 +10,7 @@ class LoginCredentialsUseCase {
         const userEntity = new AuthEntity(email, password)
         const user = await this.authService.checkUserExistenceByEmail(userEntity.getEmail())
         await this.authService.validatePasswords(userEntity.getPassword(), user.password)
-        const payloadToken = { id: user._id }
+        const payloadToken = { email: user.email }
         userEntity.setRefreshToken(this.tokenService.createRfereshToken(payloadToken))
         userEntity.setAccessToken(this.tokenService.createAccesToken(payloadToken))
         userEntity.setId(user.id)

@@ -9,8 +9,13 @@ class AuthMoogoseRepository {
     }
 
     async updateRefreshToken(idAuth, newRefreshToken) {
-        return await this.authModel.updateOne({ _id: idAuth }, { $set: { refreshToken: newRefreshToken } })
+        await this.authModel.updateOne({ _id: idAuth }, { $set: { refreshToken: newRefreshToken } })
     }
+
+    async createNewRegisterAuth(email, password, refreshToken) {
+        await this.authModel.create({ email: email, password: password, refreshToken: refreshToken })
+    }
+
 }
 
 export default AuthMoogoseRepository
