@@ -47,8 +47,12 @@ class AuthController {
     async getNewRefreshToken(req, res, next) {
         try {
             const { accessToken, refreshToken } = await this.refreshTokenUseCase.execute(req?.cookies)
-            res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
-            res.status(200).json({ accessToken })
+            if (refreshToken) {
+                res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
+                res.status(200).json({ accessToken })
+            } else {
+                res.status(200).json({ accessToken })
+            }
 
         } catch (error) {
             next(error)
