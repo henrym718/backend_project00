@@ -14,28 +14,21 @@ class AuthService {
         return await this.authRepository.updateData(identifier, dataToUpdate)
     }
 
-    async checkUserExistenceByEmail(email) {
-        const user = await this.getUserByField(email)
-        if (!user) { throw createError.NotFound("Usuario no registrado") }
+    async checkUserExistenceByfield(field) {
+        const user = await this.getUserByField(field)
+        if (!user) { throw createError.NotFound("Usuario no encontrado") }
         return user
     }
 
-    async checkUserNoExistenceByEmail(email) {
-        const user = await this.getUserByField(email)
-        if (user) { throw createError.NotFound("Usuario registrado") }
+    async checkUserNoExistenceByField(field) {
+        const user = await this.getUserByField(field)
+        if (user) { throw createError.NotFound("Usuario encontrado") }
         return user
-    }
-
-    async getUserbyToken(token) {
-        const user = await this.getUserByField(token)
-        if (user) { throw createError.NotFound("Usuario no encontrado") }
-        return user
-
     }
 
     async updateRefreshToken(identifier, refreshToken) {
         const result = await this.updateData(identifier, refreshToken)
-        if (!result) { throw createError.NotFound("Error de base de datos al intentar actualizar") }
+        if (!result) { throw createError.NotFound("Error de base de datos al actualizar el refreshToken") }
         return result
     }
 
@@ -55,8 +48,8 @@ class AuthService {
         if (!passwordsMatch) { throw createError.BadRequest("Contraseña incorrecta") }
     }
 
-    checkRefreshTokenExists(req) {
-        const token = req.cookies?.refreshToken
+    checkRefreshTokenExists(cookie) {
+        const token = cookie.refreshToken
         if (!token) throw createError.Unauthorized("Accion no permitida")
         return token
     }

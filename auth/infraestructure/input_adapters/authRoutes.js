@@ -13,5 +13,6 @@ const authController = authContainer.resolve('authController');
 router.post("/api/auth/logincredentials", validator(data.authDataValidateLogin), (req, res, next) => authController.loginCredentials(req, res, next))
 router.post("/api/auth/registercredentials", validator(data.authDataValidateRegister), (req, res, next) => authController.registerCredentials(req, res, next))
 router.get("/api/auth/logout", (req, res, next) => authController.logout(req, res, next))
+router.get("/api/auth/refreshtoken", (req, res, next) => authController.getNewRefreshToken(req, res, next))
 
 export default router

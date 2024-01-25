@@ -9,6 +9,7 @@ import AuthService from '../../auth/domain/services/authService.js';
 import LoginCredentialsUseCase from './../../auth/application/login/loginCredentialsUseCase.js';
 import RegisterCredentialsUseCase from './../../auth/application/register/registerCredentialsUseCase.js';
 import LogoutUseCase from './../../auth/application/logout/logoutUseCase.js';
+import RefreshTokenUseCase from './../../auth/application/refreshToken/refreshTokenUseCase.js';
 import AuthController from './../../auth/infraestructure/input_adapters/authController.js';
 
 const container = createContainer()
@@ -48,8 +49,17 @@ authContainer.register({
             tokenService: authContainer.resolve('tokenService')
         }))
         .singleton(),
+
     logoutUseCase: asClass(LogoutUseCase)
         .inject(() => ({ authService: authContainer.resolve('authService') }))
+        .singleton(),
+
+    refreshTokenUseCase: asClass(RefreshTokenUseCase)
+        .inject(() => ({
+            authService: authContainer.resolve('authService'),
+            tokenService: authContainer.resolve('tokenService'),
+
+        }))
         .singleton(),
 
     /* Controlador que une todos los casos de uso */
@@ -57,7 +67,8 @@ authContainer.register({
         .inject(() => ({
             loginCredentialsUseCase: authContainer.resolve('loginCredentialsUseCase'),
             registerCredentialsUseCase: authContainer.resolve('registerCredentialsUseCase'),
-            logoutUseCase: authContainer.resolve('logoutUseCase')
+            logoutUseCase: authContainer.resolve('logoutUseCase'),
+            refreshTokenUseCase: authContainer.resolve('refreshTokenUseCase')
         }))
         .singleton(),
 

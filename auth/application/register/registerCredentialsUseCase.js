@@ -13,7 +13,7 @@ class RegisterCredentialsUseCase {
             const userEntity = new AuthEntity(email, password)
 
             /*comprobar que el usuario no exista para poder continuar*/
-            await this.authService.checkUserNoExistenceByEmail({ email: userEntity.getEmail() })
+            await this.authService.checkUserNoExistenceByField({ email: userEntity.getEmail() })
 
             /*encryptar contraseña*/
             const passwordEncrypted = this.authService.encryptPasswords(userEntity.getPassword())
