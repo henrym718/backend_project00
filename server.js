@@ -9,7 +9,7 @@ const app = express();
 
 //Other imports
 import mongoConnect from "./config/dataBases/mongoConnect.js";
-import authRoutes from "./auth/infraestructure/input_adapters/authRoutes.js"
+import authRoutes from "./features/auth/infraestructure/input_adapters/authRoutes.js"
 
 
 /** esta es la que vale */

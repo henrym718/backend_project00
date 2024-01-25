@@ -1,16 +1,16 @@
 import { createContainer, asClass, asValue } from "awilix"
 
-import AuthModel from "../../auth/infraestructure/output_adapters/authMoogoseModel.js"
-import TokenService from './../../auth/domain/services/tokenService.js';
-import AuthMoogoseRepository from "../../auth/infraestructure/output_adapters/authMoogoseRepository.js"
-import AuthRepository from '../../auth/domain/repositories/authRepository.js';
-import AuthService from '../../auth/domain/services/authService.js';
+import AuthModel from "../../features/auth/infraestructure/output_adapters/authMoogoseModel.js"
+import TokenService from '../../features/auth/domain/services/tokenService.js';
+import AuthMoogoseRepository from "../../features/auth/infraestructure/output_adapters/authMoogoseRepository.js"
+import AuthRepository from '../../features/auth/domain/repositories/authRepository.js';
+import AuthService from '../../features/auth/domain/services/authService.js';
 
-import LoginCredentialsUseCase from './../../auth/application/login/loginCredentialsUseCase.js';
-import RegisterCredentialsUseCase from './../../auth/application/register/registerCredentialsUseCase.js';
-import LogoutUseCase from './../../auth/application/logout/logoutUseCase.js';
-import RefreshTokenUseCase from './../../auth/application/refreshToken/refreshTokenUseCase.js';
-import AuthController from './../../auth/infraestructure/input_adapters/authController.js';
+import LoginCredentialsUseCase from './../../features/auth/application/login/loginCredentialsUseCase.js';
+import RegisterCredentialsUseCase from './../../features/auth/application/register/registerCredentialsUseCase.js';
+import LogoutUseCase from './../../features/auth/application/logout/logoutUseCase.js';
+import RefreshTokenUseCase from './../../features/auth/application/refreshToken/refreshTokenUseCase.js';
+import AuthController from './../../features/auth/infraestructure/input_adapters/authController.js';
 
 const container = createContainer()
 const authContainer = container.createScope()
