@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     avatar: { uri: String, filename: String },
     phone: String,
     memberSince: { type: Date, default: new Date() },
-    rol: { type: String, default: "REGISTED " },
+    rol: String,
 }, {
     timestamps: false,
     versionKey: false

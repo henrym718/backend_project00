@@ -6,6 +6,11 @@ class AuthService {
         this.authRepository = authRepository;
     }
 
+
+    async getUserbyfield(field) {
+        return await this.authRepository.getUserByField(field)
+    }
+
     async checkUserExistenceByfield(field) {
         const user = await this.authRepository.getUserByField(field)
         if (!user) { throw createError.NotFound("Usuario no encontrado") }
