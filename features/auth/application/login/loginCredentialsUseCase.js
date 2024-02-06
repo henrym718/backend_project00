@@ -1,11 +1,10 @@
 import AuthEntity from "../../domain/entities/authEntity.js"
-import UserService from '../../../user/domain/services/userService.js'
 
 class LoginCredentialsUseCase {
-    constructor({ authService, tokenService }) {
+    constructor({ authService, tokenService, userService }) {
         this.authService = authService
         this.tokenService = tokenService
-        this.userService = new UserService()
+        this.userService = userService
     }
     async execute(credentials) {
         const { email, password } = credentials

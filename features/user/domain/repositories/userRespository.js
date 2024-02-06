@@ -3,6 +3,7 @@ import UserMoongoseRepository from "../../infraestructure/output_adapters/userMo
 class UserRepository {
     constructor() {
         this.userMoongoseRepository = new UserMoongoseRepository()
+        //this.userMoongoseRepository = dbRepository
     }
     async createNewUser(user) {
         return await this.userMoongoseRepository.createNewUser(user)

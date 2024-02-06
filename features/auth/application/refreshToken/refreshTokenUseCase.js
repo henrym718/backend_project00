@@ -1,11 +1,9 @@
-import UserService from '../../../user/domain/services/userService.js'
-
 
 class RefreshTokenUseCase {
-    constructor({ authService, tokenService }) {
+    constructor({ authService, tokenService, userService }) {
         this.authService = authService
         this.tokenService = tokenService
-        this.userService = new UserService()
+        this.userService = userService
     }
 
     async execute(cookie) {

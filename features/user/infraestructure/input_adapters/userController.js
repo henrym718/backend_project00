@@ -1,13 +1,11 @@
-import GetCurrentUserByCookie from "../../application/getUser/getCurrentUserByCookie.js"
-
-const getCurrentUserByCookie = new GetCurrentUserByCookie()
-
-class userController {
-    constructor() { }
-
+class UserController {
+    constructor({ getCurrentUserByCookieUseCase }) {
+        this.getCurrentUserByCookieUseCase = getCurrentUserByCookieUseCase
+        this.getCurrentUserByCookie = this.getCurrentUserByCookie.bind(this)
+    }
     async getCurrentUserByCookie(req, res, next) {
         try {
-            const result = await getCurrentUserByCookie.execute(req.cookies)
+            const result = await this.getCurrentUserByCookieUseCase.execute(req.cookies)
             res.status(200).json(result)
         } catch (error) {
             res.clearCookie("refreshToken")
@@ -16,6 +14,4 @@ class userController {
     }
 }
 
-
-
-export default userController
+export default UserController

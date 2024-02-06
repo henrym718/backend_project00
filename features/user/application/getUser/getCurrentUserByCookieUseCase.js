@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
-import UserService from './../../domain/services/userService.js';
+import UserService from '../../domain/services/userService.js';
 
 
-class GetCurrentUserByCookie {
-    constructor() {
-        this.userService = new UserService();
+class GetCurrentUserByCookieUseCase {
+    constructor({ userService }) {
+        //this.userService = new UserService();
+        this.userService = userService
     }
 
     async execute(cookie) {
@@ -24,7 +25,7 @@ class GetCurrentUserByCookie {
 
 }
 
-export default GetCurrentUserByCookie
+export default GetCurrentUserByCookieUseCase
 
 
 /*

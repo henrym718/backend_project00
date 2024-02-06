@@ -2,6 +2,7 @@ import User from "./userMoogoseModel.js"
 class UserMoogoseRepository {
     constructor() {
         this.userModel = User
+        //this.userModel = model
     }
 
     async createNewUser(user) {

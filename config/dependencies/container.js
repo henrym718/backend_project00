@@ -1,77 +1,62 @@
 import { createContainer, asClass, asValue } from "awilix"
 
 import AuthModel from "../../features/auth/infraestructure/output_adapters/authMoogoseModel.js"
-import TokenService from '../../features/auth/domain/services/tokenService.js';
 import AuthMoogoseRepository from "../../features/auth/infraestructure/output_adapters/authMoogoseRepository.js"
 import AuthRepository from '../../features/auth/domain/repositories/authRepository.js';
 import AuthService from '../../features/auth/domain/services/authService.js';
+import TokenService from '../../features/auth/domain/services/tokenService.js';
 
-import LoginCredentialsUseCase from './../../features/auth/application/login/loginCredentialsUseCase.js';
-import RegisterCredentialsUseCase from './../../features/auth/application/register/registerCredentialsUseCase.js';
-import LogoutUseCase from './../../features/auth/application/logout/logoutUseCase.js';
-import RefreshTokenUseCase from './../../features/auth/application/refreshToken/refreshTokenUseCase.js';
-import AuthController from './../../features/auth/infraestructure/input_adapters/authController.js';
+import UserModel from "../../features/user/infraestructure/output_adapters/userMoogoseModel.js"
+import UserMoogoseRepository from '../../features/user/infraestructure/output_adapters/userMoogoseRepository.js';
+import UserRepository from '../../features/user/domain/repositories/userRespository.js';
+import UserService from '../../features/user/domain/services/userService.js';
 
 const container = createContainer()
-const authContainer = container.createScope()
 
-
-authContainer.register({
+/*authService */
+container.register({
     authModel: asValue(AuthModel),
 
-    tokenService: asClass(TokenService)
-        .singleton(),
-
     authMoogoseRepository: asClass(AuthMoogoseRepository)
-        .inject(() => ({ model: authContainer.resolve('authModel') }))
+        .inject(() => ({ model: container.resolve("authModel") }))
         .singleton(),
 
     authRepository: asClass(AuthRepository)
-        .inject(() => ({ dbRepository: authContainer.resolve('authMoogoseRepository') }))
+        .inject(() => ({ dbRepository: container.resolve("authMoogoseRepository") }))
         .singleton(),
 
     authService: asClass(AuthService)
-        .inject(() => ({ authRepository: authContainer.resolve('authRepository') }))
-        .singleton(),
+        .inject(() => ({ authRepository: container.resolve("authRepository") }))
+        .singleton()
 
-
-    /*Casos de usos */
-    loginCredentialsUseCase: asClass(LoginCredentialsUseCase)
-        .inject(() => ({
-            authService: authContainer.resolve('authService'),
-            tokenService: authContainer.resolve('tokenService')
-        }))
-        .singleton(),
-
-    registerCredentialsUseCase: asClass(RegisterCredentialsUseCase)
-        .inject(() => ({
-            authService: authContainer.resolve('authService'),
-            tokenService: authContainer.resolve('tokenService')
-        }))
-        .singleton(),
-
-    logoutUseCase: asClass(LogoutUseCase)
-        .inject(() => ({ authService: authContainer.resolve('authService') }))
-        .singleton(),
-
-    refreshTokenUseCase: asClass(RefreshTokenUseCase)
-        .inject(() => ({
-            authService: authContainer.resolve('authService'),
-            tokenService: authContainer.resolve('tokenService'),
-
-        }))
-        .singleton(),
-
-    /* Controlador que une todos los casos de uso */
-    authController: asClass(AuthController)
-        .inject(() => ({
-            loginCredentialsUseCase: authContainer.resolve('loginCredentialsUseCase'),
-            registerCredentialsUseCase: authContainer.resolve('registerCredentialsUseCase'),
-            logoutUseCase: authContainer.resolve('logoutUseCase'),
-            refreshTokenUseCase: authContainer.resolve('refreshTokenUseCase')
-        }))
-        .singleton(),
 
 })
 
-export { authContainer }
+
+
+/*userService */
+container.register({
+    userModel: asValue(UserModel),
+
+    userMoogoseRepository: asClass(UserMoogoseRepository)
+        .inject(() => ({ model: container.resolve("userModel") }))
+        .singleton(),
+
+    userRepository: asClass(UserRepository)
+        .inject(() => ({ dbRepository: container.resolve("userMoogoseRepository") }))
+        .singleton(),
+
+    userService: asClass(UserService)
+        .inject(() => ({ userRepository: container.resolve("userRepository") }))
+        .singleton()
+})
+
+
+/*tokenService */
+container.register({
+    tokenService: asClass(TokenService)
+})
+
+
+
+export { container }

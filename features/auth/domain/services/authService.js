@@ -6,7 +6,6 @@ class AuthService {
         this.authRepository = authRepository;
     }
 
-
     async getUserbyfield(field) {
         return await this.authRepository.getUserByField(field)
     }

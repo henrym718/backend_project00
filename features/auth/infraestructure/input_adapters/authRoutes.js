@@ -5,7 +5,7 @@ import { validator } from './../../../../shared/data/validator.js';
 import * as data from "./authValidateData.js"
 
 // Importamos el contenedor de Awilix para resolver las dependencias
-import { authContainer } from "../../../../config/dependencies/container.js"
+import { authContainer } from "../../../../config/dependencies/authContainer.js"
 //Resolvemos el controlador de autenticación del contenedor
 const authController = authContainer.resolve('authController');
 
