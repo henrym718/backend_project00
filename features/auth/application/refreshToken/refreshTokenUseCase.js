@@ -8,7 +8,9 @@ class RefreshTokenUseCase {
         try {
             const token = cookie?.refreshToken
             if (!token) { return { accessToken: null, refreshToken: null } }
-            await this.tokenService.verifyToken(token)
+
+            await this.tokenService.verifyToken(token) // trabajr si es que caduco
+
             const user = await this.authService.checkUserExistenceByfield({ refreshToken: token })
             const payload = { email: user.email }
             const refreshToken = this.tokenService.createRfereshToken(payload)

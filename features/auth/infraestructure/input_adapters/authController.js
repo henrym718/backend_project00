@@ -51,6 +51,7 @@ class AuthController {
                 res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
                 res.status(200).json({ accessToken })
             } else {
+                res.clearCookie("refreshToken")
                 res.status(200).json({ accessToken })
             }
 

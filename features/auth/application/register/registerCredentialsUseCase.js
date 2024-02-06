@@ -1,9 +1,12 @@
+import UserService from '../../../user/domain/services/userService.js'
 import AuthEntity from "../../domain/entities/authEntity.js"
+
 
 class RegisterCredentialsUseCase {
     constructor({ authService, tokenService }) {
         this.authService = authService
         this.tokenService = tokenService
+        this.userService = new UserService()
     }
 
     async execute(credentials) {
@@ -30,6 +33,9 @@ class RegisterCredentialsUseCase {
 
             /* agrego al registro su respectivo accestoken */
             await this.authService.createNewRegisterAuth({ email: userEntity.getEmail(), password: userEntity.getPassword(), refreshToken: userEntity.getRefreshToken() })
+
+            /*creo el nuevo usuario con su email y su rol */
+            await this.userService.createNewUser({ email: userEntity.getEmail() })
 
             /*retornar el token*/
             return { accessToken: userEntity.getAccessToken(), refreshToken: userEntity.getRefreshToken() }

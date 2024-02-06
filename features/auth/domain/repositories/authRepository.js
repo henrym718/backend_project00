@@ -14,9 +14,6 @@ class AuthRepository {
     async createNewRegisterAuth(data) {
         return await this.dbRepository.createNewRegisterAuth(data)
     }
-
-
-    // Otros métodos que puedan ser utilizados por AuthService
 }
 
 export default AuthRepository

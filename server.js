@@ -10,6 +10,7 @@ const app = express();
 //Other imports
 import mongoConnect from "./config/dataBases/mongoConnect.js";
 import authRoutes from "./features/auth/infraestructure/input_adapters/authRoutes.js"
+import userRoutes from "./features/user/infraestructure/input_adapters/userRoutes.js"
 
 
 /** esta es la que vale */
@@ -27,6 +28,7 @@ app.use(cookieParser());
 
 //Index routes
 app.use(authRoutes)
+app.use(userRoutes)
 
 //ErrorHandler
 app.use(errorLog);
