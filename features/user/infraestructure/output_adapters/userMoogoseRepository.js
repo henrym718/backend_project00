@@ -1,8 +1,6 @@
-import User from "./userMoogoseModel.js"
 class UserMoogoseRepository {
-    constructor() {
-        this.userModel = User
-        //this.userModel = model
+    constructor({ model }) {
+        this.userModel = model
     }
 
     async createNewUser(user) {

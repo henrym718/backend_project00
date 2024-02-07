@@ -1,8 +1,6 @@
-import UserMoongoseRepository from "../../infraestructure/output_adapters/userMoogoseRepository.js"
-
 class UserRepository {
-    constructor() {
-        this.userMoongoseRepository = new UserMoongoseRepository()
+    constructor({ dbRepository }) {
+        this.userMoongoseRepository = dbRepository
         //this.userMoongoseRepository = dbRepository
     }
     async createNewUser(user) {

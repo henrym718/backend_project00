@@ -32,8 +32,6 @@ container.register({
 
 })
 
-
-
 /*userService */
 container.register({
     userModel: asValue(UserModel),

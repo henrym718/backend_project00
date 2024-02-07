@@ -1,10 +1,6 @@
 import jwt from 'jsonwebtoken';
-import UserService from '../../domain/services/userService.js';
-
-
 class GetCurrentUserByCookieUseCase {
     constructor({ userService }) {
-        //this.userService = new UserService();
         this.userService = userService
     }
 
