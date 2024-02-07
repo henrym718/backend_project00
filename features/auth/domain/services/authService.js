@@ -6,32 +6,16 @@ class AuthService {
         this.authRepository = authRepository;
     }
 
-    async getUserbyfield(field) {
-        return await this.authRepository.getUserByField(field)
-    }
-
-    async checkUserExistenceByfield(field) {
-        const user = await this.authRepository.getUserByField(field)
-        if (!user) { throw createError.NotFound("Usuario no encontrado") }
-        return user
-    }
-
-    async checkUserNoExistenceByField(field) {
-        const user = await this.authRepository.getUserByField(field)
-        if (user) { throw createError.NotFound("Usuario encontrado") }
-        return user
+    async getAuthByfield(field) {
+        return await this.authRepository.getAuthByfield(field)
     }
 
     async updateRefreshToken(identifier, refreshToken) {
-        const result = await this.authRepository.updateData(identifier, refreshToken)
-        if (!result) { throw createError.NotFound("Error de base de datos al actualizar el refreshToken") }
-        return result
+        return await this.authRepository.updateData(identifier, refreshToken)
     }
 
     async createNewRegisterAuth(data) {
-        const result = await this.authRepository.createNewRegisterAuth(data)
-        if (!result) { throw createError.BadGateway("Error de base de datos al crear el registro") }
-        return result
+        return await this.authRepository.createNewRegisterAuth(data)
     }
 
     encryptPasswords(password) {
@@ -39,14 +23,7 @@ class AuthService {
     }
 
     validatePasswords(password, passwordEncrypted) {
-        const passwordsMatch = bcrypt.compareSync(password, passwordEncrypted)
-        if (!passwordsMatch) { throw createError.BadRequest("Contraseña incorrecta") }
-    }
-
-    checkRefreshTokenExists(cookie) {
-        const token = cookie?.refreshToken
-        if (!token) throw createError.Unauthorized("Accion no permitida")
-        return token
+        return bcrypt.compareSync(password, passwordEncrypted)
     }
 }
 

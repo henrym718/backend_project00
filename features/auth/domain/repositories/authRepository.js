@@ -3,8 +3,8 @@ class AuthRepository {
         this.dbRepository = dbRepository;
     }
 
-    async getUserByField(field) {
-        return await this.dbRepository.getUserByField(field);
+    async getAuthByfield(field) {
+        return await this.dbRepository.getAuthByfield(field);
     }
 
     async updateData(identifier, dataToUpdate) {

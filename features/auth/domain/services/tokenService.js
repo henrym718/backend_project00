@@ -11,9 +11,7 @@ class TokenService {
     }
 
     verifyToken(token) {
-        const result = jwt.verify(token, process.env.KEY_TOKEN_SECRET)
-        if (!result) { throw createError.BadRequest("Token no valido") }
-        return result
+        return jwt.verify(token, process.env.KEY_TOKEN_SECRET)
     }
 
 }

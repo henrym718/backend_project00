@@ -15,7 +15,8 @@ class RegisterCredentialsUseCase {
             const userEntity = new AuthEntity(email, password)
 
             /*comprobar que el usuario no exista para poder continuar*/
-            await this.authService.checkUserNoExistenceByField({ email: userEntity.getEmail() })
+            const user = await this.authService.getAuthByfield({ email: userEntity.getEmail() })
+            if (user) { throw createError.NotFound("Usuario encontrado") }
 
             /*encryptar contraseña*/
             const passwordEncrypted = this.authService.encryptPasswords(userEntity.getPassword())
@@ -32,10 +33,13 @@ class RegisterCredentialsUseCase {
             userEntity.setRefreshToken(this.tokenService.createRfereshToken(payloadRefreshToken))
 
             /* agrego al registro su respectivo accestoken */
-            await this.authService.createNewRegisterAuth({ email: userEntity.getEmail(), password: userEntity.getPassword(), refreshToken: userEntity.getRefreshToken() })
+            const response = await this.authService.createNewRegisterAuth({ email: userEntity.getEmail(), password: userEntity.getPassword(), refreshToken: userEntity.getRefreshToken() })
+            if (!response) { throw createError.BadGateway("Error de base de datos al crear el registro") }
+
 
             /*creo el nuevo usuario con su email y su rol en la db user*/
-            await this.userService.createNewUser({ email: userEntity.getEmail(), rol: "REGISTERED" })
+            const result = await this.userService.createNewUser({ email: userEntity.getEmail(), rol: "REGISTERED" })
+            if (!result) { throw createError.BadGateway("Error de base de datos al crear el registro") }
 
             /*retornar el token*/
             return { accessToken: userEntity.getAccessToken(), refreshToken: userEntity.getRefreshToken() }

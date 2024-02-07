@@ -13,10 +13,11 @@ class RefreshTokenUseCase {
             if (!token) { return { accessToken: null, refreshToken: null } }
 
             /*verifico si la cookie es valida */
-            await this.tokenService.verifyToken(token)
+            const responseToken = await this.tokenService.verifyToken(token)
+            if (!responseToken) { throw createError.BadRequest("Token no valido") }
 
             /*verifico si no existe el auth que corresponde a la cookie */
-            const auth = await this.authService.getUserbyfield({ refreshToken: token })
+            const auth = await this.authService.getAuthByfield({ refreshToken: token })
             if (!auth) { return { accessToken: null, refreshToken: null } }
 
             /*crear RefreshToken para el usuario*/
@@ -26,10 +27,12 @@ class RefreshTokenUseCase {
             /* agrego al registro su respectivo accestoken */
             const user = await this.userService.getUserByField({ email: auth.email })
             const payloadAccessToken = { email: user.email, rol: user.rol }
-            const accessToken = this.tokenService.createAccesToken(payloadAccessToken)
+            const accessToken = await this.tokenService.createAccesToken(payloadAccessToken)
 
             /*actualizo el nuevo refreshToken en la bd */
-            await this.authService.updateRefreshToken({ email: auth.email }, { refreshToken })
+            const responseUpdate = await this.authService.updateRefreshToken({ email: auth.email }, { refreshToken })
+            if (!responseUpdate) { throw createError.NotFound("Error de base de datos al actualizar el refreshToken") }
+
             return { accessToken, refreshToken }
         } catch (err) {
             throw err

@@ -4,7 +4,7 @@ class AuthMoogoseRepository {
         this.authModel = model;
     }
 
-    async getUserByField(field) {
+    async getAuthByfield(field) {
         return await this.authModel.findOne(field)
     }
 

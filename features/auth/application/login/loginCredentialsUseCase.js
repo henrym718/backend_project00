@@ -1,5 +1,6 @@
 import AuthEntity from "../../domain/entities/authEntity.js"
 
+
 class LoginCredentialsUseCase {
     constructor({ authService, tokenService, userService }) {
         this.authService = authService
@@ -9,8 +10,14 @@ class LoginCredentialsUseCase {
     async execute(credentials) {
         const { email, password } = credentials
         const userEntity = new AuthEntity(email, password)
-        const auth = await this.authService.checkUserExistenceByfield({ email: userEntity.getEmail() })
-        await this.authService.validatePasswords(userEntity.getPassword(), auth.password)
+
+        /*verifico si ya existe un usuario*/
+        const auth = await this.authService.getAuthByfield({ email: userEntity.getEmail() })
+        if (!auth) { throw createError.NotFound("Usuario no encontrado") }
+
+        /*valido la password*/
+        const passwordsMatch = await this.authService.validatePasswords(userEntity.getPassword(), auth.password)
+        if (!passwordsMatch) { throw createError.BadRequest("Contraseña incorrecta") }
 
         /*crear RefreshToken para el usuario*/
         const payloadRefreshToken = { email: auth.email }
@@ -23,7 +30,8 @@ class LoginCredentialsUseCase {
         /*actualizo la entidad*/
         userEntity.setAccessToken(this.tokenService.createAccesToken(payloadAccesToken))
         /*actualizo el refreshtoken en la db*/
-        this.authService.updateRefreshToken({ email: userEntity.getEmail() }, { refreshToken: userEntity.getRefreshToken() })
+        const response = this.authService.updateRefreshToken({ email: userEntity.getEmail() }, { refreshToken: userEntity.getRefreshToken() })
+        if (!response) { throw createError.NotFound("Error de base de datos al actualizar el refreshToken") }
 
         return { accessToken: userEntity.getAccessToken(), refreshToken: userEntity.getRefreshToken() }
     }
