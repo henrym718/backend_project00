@@ -1,4 +1,3 @@
-
 class RefreshTokenUseCase {
     constructor({ authService, tokenService, userService }) {
         this.authService = authService
@@ -7,36 +6,30 @@ class RefreshTokenUseCase {
     }
 
     async execute(cookie) {
-        try {
-            /*verifico si no existe una cookie */
-            const token = cookie?.refreshToken
-            if (!token) { return { accessToken: null, refreshToken: null } }
+        /*verifico si no existe una cookie */
+        const token = cookie?.refreshToken
+        if (!token) return { accessToken: null, refreshToken: null }
 
-            /*verifico si la cookie es valida */
-            const responseToken = await this.tokenService.verifyToken(token)
-            if (!responseToken) { throw createError.BadRequest("Token no valido") }
+        /*Obtengo la data del usuario segun su refreshToken */
+        const auth = await this.authService.getAuthByfield({ refreshToken: token })
 
-            /*verifico si no existe el auth que corresponde a la cookie */
-            const auth = await this.authService.getAuthByfield({ refreshToken: token })
-            if (!auth) { return { accessToken: null, refreshToken: null } }
+        //podria decodificar el token {email} y comparlo con el auth.email
 
-            /*crear RefreshToken para el usuario*/
-            const payloadRefreshToken = { email: auth.email }
-            const refreshToken = this.tokenService.createRfereshToken(payloadRefreshToken)
+        /*crear RefreshToken para el usuario*/
+        const payloadRefreshToken = { email: auth.email }
+        const refreshToken = await this.tokenService.createRfereshToken(payloadRefreshToken)
 
-            /* agrego al registro su respectivo accestoken */
-            const user = await this.userService.getUserByField({ email: auth.email })
-            const payloadAccessToken = { email: user.email, rol: user.rol }
-            const accessToken = await this.tokenService.createAccesToken(payloadAccessToken)
+        /* agrego al registro su respectivo accestoken */
+        const user = await this.userService.getUserByField({ email: auth.email })
+        const payloadAccessToken = { email: user.email, rol: user.rol, user: user._id }
+        const accessToken = await this.tokenService.createAccesToken(payloadAccessToken)
 
-            /*actualizo el nuevo refreshToken en la bd */
-            const responseUpdate = await this.authService.updateRefreshToken({ email: auth.email }, { refreshToken })
-            if (!responseUpdate) { throw createError.NotFound("Error de base de datos al actualizar el refreshToken") }
+        /*actualizo el nuevo refreshToken en la bd */
+        const responseUpdate = await this.authService.updateRefreshToken({ email: auth.email }, { refreshToken })
+        if (!responseUpdate) { throw createError.NotFound("Error de base de datos al actualizar el refreshToken") }
 
-            return { accessToken, refreshToken }
-        } catch (err) {
-            throw err
-        }
+        return { accessToken, refreshToken }
+
     }
 }
 export default RefreshTokenUseCase

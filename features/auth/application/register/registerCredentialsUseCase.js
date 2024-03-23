@@ -1,4 +1,5 @@
 import AuthEntity from "../../domain/entities/authEntity.js"
+import createError from "http-errors"
 
 
 class RegisterCredentialsUseCase {
@@ -24,25 +25,21 @@ class RegisterCredentialsUseCase {
             /*actualizo la entidad*/
             userEntity.setPassword(passwordEncrypted)
 
-            /*crear AccesToken para el usuario*/
-            const payloadAccessToken = { email: userEntity.getEmail(), rol: "REGISTERED" }
-            userEntity.setAccessToken(this.tokenService.createAccesToken(payloadAccessToken))
-
             /*crear RefreshToken para el usuario*/
             const payloadRefreshToken = { email: userEntity.getEmail() }
             userEntity.setRefreshToken(this.tokenService.createRfereshToken(payloadRefreshToken))
 
-            /* agrego al registro su respectivo accestoken */
+            /* agrego al registro su respectivo refreshtoken */
             const response = await this.authService.createNewRegisterAuth({ email: userEntity.getEmail(), password: userEntity.getPassword(), refreshToken: userEntity.getRefreshToken() })
             if (!response) { throw createError.BadGateway("Error de base de datos al crear el registro") }
 
 
             /*creo el nuevo usuario con su email y su rol en la db user*/
-            const result = await this.userService.createNewUser({ email: userEntity.getEmail(), rol: "REGISTERED" })
+            const result = await this.userService.createNewUser({ email: userEntity.getEmail(), rol: "BASICUSER" })
             if (!result) { throw createError.BadGateway("Error de base de datos al crear el registro") }
 
             /*retornar el token*/
-            return { accessToken: userEntity.getAccessToken(), refreshToken: userEntity.getRefreshToken() }
+            return { refreshToken: userEntity.getRefreshToken() }
         } catch (err) {
             throw err
         }

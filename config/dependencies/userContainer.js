@@ -2,7 +2,9 @@ import { asClass } from "awilix"
 import { container } from "./container.js"
 
 import GetCurrentUserByCookieUseCase from '../../features/user/application/getUser/getCurrentUserByCookieUseCase.js';
-import UserController from '../../features/user/infraestructure/input_adapters/UserController.js';
+import CreateUserUseCase from './../../features/user/application/createUser/createUserUseCase.js';
+
+import UserController from '../../features/user/infraestructure/input_adapters/userController.js';
 
 
 
@@ -15,9 +17,17 @@ userContainer.register({
         .inject(() => ({ userService }))
         .singleton(),
 
+    createUserUseCase: asClass(CreateUserUseCase)
+        .inject(() => ({ userService }))
+        .singleton(),
+
+
     /**controlador del USER*/
     userController: asClass(UserController)
-        .inject(() => ({ getCurrentUserByCookieUseCase: userContainer.resolve("getCurrentUserByCookieUseCase") }))
+        .inject(() => ({
+            getCurrentUserByCookieUseCase: userContainer.resolve("getCurrentUserByCookieUseCase"),
+            createUserUseCase: userContainer.resolve("createUserUseCase")
+        }))
         .singleton()
 })
 

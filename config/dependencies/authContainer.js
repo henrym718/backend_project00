@@ -5,7 +5,9 @@ import LoginCredentialsUseCase from './../../features/auth/application/login/log
 import RegisterCredentialsUseCase from './../../features/auth/application/register/registerCredentialsUseCase.js';
 import LogoutUseCase from './../../features/auth/application/logout/logoutUseCase.js';
 import RefreshTokenUseCase from './../../features/auth/application/refreshToken/refreshTokenUseCase.js';
+import ChekIsAuthenticatedUseCase from '../../features/auth/application/login/chekIsAuthenticatedUseCase.js';
 import AuthController from './../../features/auth/infraestructure/input_adapters/authController.js';
+
 
 
 const authContainer = container.createScope()
@@ -30,6 +32,9 @@ authContainer.register({
     refreshTokenUseCase: asClass(RefreshTokenUseCase)
         .inject(() => ({ authService, tokenService, userService }))
         .singleton(),
+    chekIsAuthenticatedUseCase: asClass(ChekIsAuthenticatedUseCase)
+        .inject(() => ({ authService }))
+        .singleton(),
 
     /**controlador del AUTH */
     authController: asClass(AuthController)
@@ -37,7 +42,8 @@ authContainer.register({
             registerCredentialsUseCase: authContainer.resolve("registerCredentialsUseCase"),
             loginCredentialsUseCase: authContainer.resolve("loginCredentialsUseCase"),
             refreshTokenUseCase: authContainer.resolve("refreshTokenUseCase"),
-            logoutUseCase: authContainer.resolve("logoutUseCase")
+            logoutUseCase: authContainer.resolve("logoutUseCase"),
+            // chekIsAuthenticatedUseCase: authContainer.resolve("chekIsAuthenticatedUseCase")
         }))
         .singleton()
 })

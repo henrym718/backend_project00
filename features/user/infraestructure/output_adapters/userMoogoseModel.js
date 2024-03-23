@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose"
-
 const userSchema = new Schema({
     email: String,
     firstName: String,
@@ -7,8 +6,12 @@ const userSchema = new Schema({
     displayName: String,
     gender: String,
     city: String,
+    sector: String,
     aboutMe: String,
-    avatar: { uri: String, filename: String },
+    avatar: String,
+    dateOfBirth: Date,
+    levelOfEducation: String,
+    profession: String,
     phone: String,
     memberSince: { type: Date, default: new Date() },
     rol: String,

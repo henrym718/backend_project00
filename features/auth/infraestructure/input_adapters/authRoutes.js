@@ -14,5 +14,6 @@ router.post("/api/auth/logincredentials", validator(data.authDataValidateLogin),
 router.post("/api/auth/registercredentials", validator(data.authDataValidateRegister), (req, res, next) => authController.registerCredentials(req, res, next))
 router.get("/api/auth/logout", (req, res, next) => authController.logout(req, res, next))
 router.get("/api/auth/refreshtoken", (req, res, next) => authController.getNewRefreshToken(req, res, next))
+router.post("/api/auth/isauthenticated", (req, res, next) => authController.chekIsAuthenticated(req, res, next))
 
 export default router

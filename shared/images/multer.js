@@ -4,18 +4,13 @@ import path from "path";
 const storage = multer.diskStorage({
   destination: "tmp",
   filename: (_, file, cb) => {
-    const uniqueFixedPath =
-      new Date().getTime() + path.extname(file.originalname);
-    cb(null, uniqueFixedPath);
+    const uniqueFileName = `${Date.now()}${path.extname(file.originalname)}`;
+    cb(null, uniqueFileName);
   },
 });
 const fileFilter = function (_, file, cb) {
   const allowedMimeTypes = ["image/jpeg", "image/png"];
-  if (allowedMimeTypes.includes(file.mimetype)) {
-    cb(null, true); // Aceptar archivo
-  } else {
-    cb(new Error(" Solo se permiten archivos JPEG y PNG."), false); // Rechazar archivo
-  }
+  cb(null, allowedMimeTypes.includes(file.mimetype));
 };
 
-export const upload = multer({ storage, fileFilter, fileFilter });
+export const upload = multer({ storage, fileFilter });

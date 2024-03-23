@@ -3,16 +3,16 @@ class GetCurrentUserByCookieUseCase {
     constructor({ userService }) {
         this.userService = userService
     }
-
     async execute(cookie) {
         const token = cookie?.refreshToken
-        if (!token) { return { rol: "PUBLIC" } }
+        if (!token) { return { rol: "PUBLICUSER" } }
 
         return new Promise((resolve, reject) => {
             jwt.verify(token, process.env.KEY_TOKEN_SECRET, async (err, payload) => {
-                if (err) { reject({ rol: "PUBLIC" }) }
+                if (err) { reject({ rol: "PUBLICUSER" }) }
                 else {
                     const user = await this.userService.getUserByField({ email: payload.email })
+                    //podria enviar solo el id del use a la cookie y trbaajar con el id para recuperar a info
                     resolve(user)
                 }
             })

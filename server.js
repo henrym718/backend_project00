@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import { errorLog, errorHandler } from "./middleware/errorHandler.js";
+import { errorLog, errorHandler } from "./middleware/errors/errorHandler.js";
 
 //Inicialization
 dotenv.config();
@@ -11,6 +11,8 @@ const app = express();
 import mongoConnect from "./config/dataBases/mongoConnect.js";
 import authRoutes from "./features/auth/infraestructure/input_adapters/authRoutes.js"
 import userRoutes from "./features/user/infraestructure/input_adapters/userRoutes.js"
+import imagesRoutes from "./features/images/infraestructure/input_adapters/imageRoutes.js"
+import productRoutes from "./features/product/infraestructure/input_adapters/productRoutes.js"
 
 
 /** esta es la que vale */
@@ -29,6 +31,8 @@ app.use(cookieParser());
 //Index routes
 app.use(authRoutes)
 app.use(userRoutes)
+app.use(imagesRoutes)
+app.use(productRoutes)
 
 //ErrorHandler
 app.use(errorLog);

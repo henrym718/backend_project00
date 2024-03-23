@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken"
-import createError from "http-errors"
 
 class TokenService {
     createAccesToken(payload) {
@@ -12,6 +11,10 @@ class TokenService {
 
     verifyToken(token) {
         return jwt.verify(token, process.env.KEY_TOKEN_SECRET)
+    }
+
+    decodeToken(token) {
+        return jwt.decode(token, process.env.KEY_TOKEN_SECRET)
     }
 
 }

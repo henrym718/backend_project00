@@ -1,4 +1,3 @@
-import createError from "http-errors"
 import bcrypt from 'bcrypt';
 
 class AuthService {
